@@ -1,8 +1,11 @@
 #include <iostream>
+#include <string>
+#include <cstdlib>
 
-using namespace std;
+#include "mainMenu.h"
 
 int main()
 {
-    
+    mainMenu();
+    return 0;
 }
