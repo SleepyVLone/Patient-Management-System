@@ -1,0 +1,65 @@
+{
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "Build NHS Project",
+            "command": "/usr/bin/clang",
+            "args": [
+                "-c",
+                "-o",
+                "${workspaceFolder}/sqlite3.o",
+                "${workspaceFolder}/sqlite3.c"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": ["$gcc"],
+            "group": "build"
+        },
+        {
+            "type": "cppbuild",
+            "label": "Link NHS Project",
+            "command": "/usr/bin/clang++",
+            "args": [
+                "-fcolor-diagnostics",
+                "-fansi-escape-codes",
+                "-std=c++17",
+                "-g",
+                "${workspaceFolder}/sqlite3.o",
+                "${workspaceFolder}/main.cpp",
+                "${workspaceFolder}/login.cpp",
+                "${workspaceFolder}/mainMenu.cpp",
+                "${workspaceFolder}/registerPatient.cpp",
+                "${workspaceFolder}/patientMenu.cpp",
+                "${workspaceFolder}/nurseMenu.cpp",
+                "${workspaceFolder}/doctorMenu.cpp",
+                "${workspaceFolder}/pharmacistMenu.cpp",
+                "${workspaceFolder}/viewMyRecord.cpp",
+                "${workspaceFolder}/searchPatients.cpp",
+                "${workspaceFolder}/viewPatientDetails.cpp",
+                "${workspaceFolder}/updatePatientInformation.cpp",
+                "${workspaceFolder}/modifyMedication.cpp",
+                "${workspaceFolder}/viewPrescriptions.cpp",
+                "${workspaceFolder}/editPrescriptions.cpp",
+                "${workspaceFolder}/createPharmacistAccount.cpp",
+                "${workspaceFolder}/calculateTreatmentCosts.cpp",
+                "${workspaceFolder}/calculateStatistics.cpp",
+                "${workspaceFolder}/hashPassword.cpp",
+                "${workspaceFolder}/database.cpp",
+                "-o",
+                "${workspaceFolder}/nhs"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "dependsOn": "Build NHS Project",
+            "problemMatcher": ["$gcc"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "Compiles sqlite3.c as C, then builds all C++ files."
+        }
+    ],
+    "version": "2.0.0"
+}

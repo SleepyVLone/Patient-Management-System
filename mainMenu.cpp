@@ -20,12 +20,12 @@ void mainMenu()
         system("clear");
 
         cout << green << "=== Healthcare System ===" << reset << endl << endl;
-        cout << lightGreen << "Please make a selection" << endl << endl;
 
         cout << lightGreen << "1. Login" << reset << endl;
         cout << lightGreen << "2. Register" << reset << endl;
         cout << lightGreen << "3. Exit" << reset << endl;
 
+        cout << lightGreen << "Please make a selection: ";
         cin >> choice;
 
         if (choice == 1)

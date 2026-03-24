@@ -1,0 +1,7 @@
+{
+    "C_Cpp.files.exclude": {
+        "**/sqlite-amalgamation-3450200/**": true,
+        "**/sqlite3.c": true,
+        "**/sqlite3.h": true
+    }
+}
