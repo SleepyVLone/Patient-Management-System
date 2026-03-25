@@ -17,6 +17,7 @@ void openDatabase()
     else
     {
         cout << "Database opened!" << endl;
+        createTables();
     }
 }
 

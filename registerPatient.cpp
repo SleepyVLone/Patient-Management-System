@@ -2,6 +2,7 @@
 #include <string>
 
 #include "registerPatient.h"
+#include "database.h"
 
 using namespace std;
 
@@ -14,23 +15,51 @@ void registerPatient()
 
     system ("clear");
 
-    string registerAccount;
+    string registerUsername;
     string registerPassword;
 
-    cout << green << "=== Register Menu ===" << reset << endl << endl;
+    string fullName;
+    int age;
+    bool hasCancerHistory;
+    bool hasRecoveredFromCancer;
+    int cancerStage;
+    int diabetesType;
+    string smokingFrequency;
+    string conditionType;
 
-    cout << lightGreen << "Enter account name: " << reset;
-    cin >> registerAccount;
+    cout << "Please enter the username you would like to use: ";
+    cin >> registerUsername;
 
-    cout << lightGreen << "Enter account password: " << reset;
+    cout << "Please enter the password for your account: ";
     cin >> registerPassword;
 
-    cout << endl;
-    cout << green << "Account has been registered successfully." << reset << endl;
+    cout << "Thank you!" << endl;
+    cout << "We are now going to ask you some questions to complete your account." << endl << endl;
 
-    cout << endl;
-    cout << "Enter 0 to return to the main menu: ";
+    cout << "Please enter your full name: ";
+    cin.ignore();
+    getline(cin, fullName);
 
-    int back;
-    cin >> back;
+    cout << "Please enter your age: ";
+    cin >> age;
+
+    string cancerHistoryInput;
+    cout << "Have you ever had cancer? (Yes/No): ";
+    cin >> cancerHistoryInput;
+    hasCancerHistory = (cancerHistoryInput == "yes");
+    if (hasCancerHistory == "yes")
+
+    cout << "have you recovered from cancer: ";
+    cin >> hasRecoveredFromCancer;
+
+    cout << "What stage of cancer do you have: ";
+    cin >> cancerStage;
+
+    cout << "What type of diabetes do you have: ";
+    cin >> diabetesType;
+
+    cout << "How often do you smoke (Daily, Weekly, Monthly): ";
+    cin >> smokingFrequency;
+
+
 }
