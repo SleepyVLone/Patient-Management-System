@@ -28,8 +28,28 @@ void registerPatient()
     string conditionType;
     bool hasDiabetes;
 
-    cout << "Please enter the username you would like to use: ";
-    cin >> registerUsername;
+    while(true)
+    {
+        cout << "Please enter the username you would like to use: ";
+        cin >> registerUsername;
+
+        sqlite3_stmt* checkStmt;
+
+        string checkSql = "SELECT userId FROM Users WHERE username = ?";
+
+        sqlite3_prepare_v2(db, checkSql.c_str(), -1, &checkStmt, nullptr);
+        sqlite3_bind_text(checkStmt, 1, registerUsername.c_str(), -1, SQLITE_STATIC);
+
+        if (sqlite3_step(checkStmt) == SQLITE_ROW)
+        {
+            cout << error << "Username already taken. Please choose another." << reset << endl;
+            sqlite3_finalize(checkStmt);
+            continue;
+        }
+
+        sqlite3_finalize(checkStmt);
+        break;
+    }
 
     cout << "Please enter the password for your account: ";
     cin >> registerPassword;
@@ -95,15 +115,16 @@ void registerPatient()
     sqlite3_bind_text(stmt, 1, registerUsername.c_str(), -1, SQLITE_STATIC);
     sqlite3_bind_text(stmt, 2, registerPassword.c_str(), -1, SQLITE_STATIC);
 
-    if (sqlite3_step(stmt) == SQLITE_DONE)
+    if (sqlite3_step(stmt) != SQLITE_DONE)
     {
-        cout << green << "Your account has been successfully registered." << reset << endl;
+        cout << error << "Username already taken." << reset << endl;
+        sqlite3_finalize(stmt);
+        return;
     }
-    else
-    {
-        cout << error << "Account registration failed." << reset << endl;
-    }
+
     sqlite3_finalize(stmt);
+
+    cout << green << "Your account has been successfully registered." << reset << endl;
 
     int userId = sqlite3_last_insert_rowid(db);
 
@@ -126,4 +147,79 @@ void registerPatient()
         cout << error << "Failed to create patient record." << reset << endl;
     }
     sqlite3_finalize(stmt);
+
+    int patientId = sqlite3_last_insert_rowid(db);
+
+    if (hasCancerHistory)
+    {
+        sql = "INSERT INTO PatientConditions (patientId, conditionType) VALUES (?, 'Cancer')";
+
+        result = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
+
+        sqlite3_bind_int(stmt, 1, patientId);
+        sqlite3_step(stmt);
+        sqlite3_finalize(stmt);
+
+        int patientConditionId = sqlite3_last_insert_rowid(db);
+
+        sql = "INSERT INTO CancerDetails (patientConditionId, cancerStage) VALUES (?, ?)";
+
+        result = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
+
+        sqlite3_bind_int(stmt, 1, patientConditionId);
+        sqlite3_bind_int(stmt, 2, cancerStage);
+
+        sqlite3_step(stmt);
+        sqlite3_finalize(stmt);
+    }
+
+    if (hasDiabetes)
+    {
+        sql = "INSERT INTO PatientConditions (patientId, conditionType) VALUES (?, 'Diabetes')";
+
+        result = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
+
+        sqlite3_bind_int(stmt, 1, patientId);
+        sqlite3_step(stmt);
+        sqlite3_finalize(stmt);
+
+        int patientConditionId = sqlite3_last_insert_rowid(db);
+
+        sql = "INSERT INTO DiabetesDetails (patientConditionId, diabetesType) VALUES (?, ?)";
+
+        result = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
+
+        sqlite3_bind_int(stmt, 1, patientConditionId);
+        sqlite3_bind_int(stmt, 2, diabetesType);
+
+        sqlite3_step(stmt);
+        sqlite3_finalize(stmt);
+    }
+
+    if (smokingInput == "yes")
+    {
+        sql = "INSERT INTO PatientConditions (patientId, conditionType) VALUES (?, 'Smoking')";
+
+        result = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
+
+        sqlite3_bind_int(stmt, 1, patientId);
+        sqlite3_step(stmt);
+        sqlite3_finalize(stmt);
+
+        int patientConditionId = sqlite3_last_insert_rowid(db);
+
+        sql = "INSERT INTO SmokingDetails (patientConditionId, smokingFrequency) VALUES (?, ?)";
+
+        result = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
+
+        sqlite3_bind_int(stmt, 1, patientConditionId);
+        sqlite3_bind_text(stmt, 2, smokingFrequency.c_str(), -1, SQLITE_STATIC);
+
+        sqlite3_step(stmt);
+        sqlite3_finalize(stmt);
+    }
+    cout << green << "Registration complete! You can now log in." << reset << endl;
+    cout << "Press Enter to return to the main menu...";
+    cin.ignore();
+    cin.get();
 }
