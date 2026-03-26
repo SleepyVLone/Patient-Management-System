@@ -26,6 +26,7 @@ void registerPatient()
     int diabetesType;
     string smokingFrequency;
     string conditionType;
+    bool hasDiabetes;
 
     cout << "Please enter the username you would like to use: ";
     cin >> registerUsername;
@@ -44,22 +45,45 @@ void registerPatient()
     cin >> age;
 
     string cancerHistoryInput;
-    cout << "Have you ever had cancer? (Yes/No): ";
+    cout << "Have you ever had cancer? (yes/no): ";
     cin >> cancerHistoryInput;
     hasCancerHistory = (cancerHistoryInput == "yes");
-    if (hasCancerHistory == "yes")
 
-    cout << "have you recovered from cancer: ";
-    cin >> hasRecoveredFromCancer;
+    if (hasCancerHistory)
+    {
+        string currentCancerInput;
+        cout << "Do you currently have cancer? (yes/no): ";
+        cin >> currentCancerInput;
 
-    cout << "What stage of cancer do you have: ";
-    cin >> cancerStage;
+        if (currentCancerInput == "yes")
+        {
+            hasRecoveredFromCancer = false;
+            cout << "What stage of cancer do you have? (1-4): ";
+            cin >> cancerStage;
+        }
+        else
+        {
+            hasRecoveredFromCancer = true;
+        }
+    }
 
-    cout << "What type of diabetes do you have: ";
-    cin >> diabetesType;
+    string hasDiabetesInput;
+    cout << "Do you have diabetes? (yes/no): ";
+    cin >> hasDiabetesInput;
+    hasDiabetes = (hasDiabetesInput == "yes");
 
-    cout << "How often do you smoke (Daily, Weekly, Monthly): ";
-    cin >> smokingFrequency;
+    if (hasDiabetes)
+    {
+        cout << "What type of diabetes do you have? (1-2): ";
+        cin >> diabetesType;
+    }
 
-
+    string smokingInput;
+    cout << "Do you smoke? (yes/no): ";
+    cin >> smokingInput;
+    if (smokingInput == "yes")
+    {
+        cout << "How often? (Daily/Weekly/Monthly): ";
+        cin >> smokingFrequency;
+    }
 }
