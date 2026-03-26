@@ -86,4 +86,44 @@ void registerPatient()
         cout << "How often? (Daily/Weekly/Monthly): ";
         cin >> smokingFrequency;
     }
+
+    sqlite3_stmt* stmt;
+    string sql = "INSERT INTO Users (username, passwordHash, role, createdAt) VALUES (?, ?, 'Patient', datetime('now'))";
+
+    int result = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
+
+    sqlite3_bind_text(stmt, 1, registerUsername.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 2, registerPassword.c_str(), -1, SQLITE_STATIC);
+
+    if (sqlite3_step(stmt) == SQLITE_DONE)
+    {
+        cout << green << "Your account has been successfully registered." << reset << endl;
+    }
+    else
+    {
+        cout << error << "Account registration failed." << reset << endl;
+    }
+    sqlite3_finalize(stmt);
+
+    int userId = sqlite3_last_insert_rowid(db);
+
+    sql = "INSERT INTO Patients (userId, fullName, age, hasCancerHistory, isRecoveredFromCancer) VALUES (?, ?, ?, ?, ?)";
+
+    result = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
+
+    sqlite3_bind_int(stmt, 1, userId);
+    sqlite3_bind_text(stmt, 2, fullName.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_int(stmt, 3, age);
+    sqlite3_bind_int(stmt, 4, hasCancerHistory);
+    sqlite3_bind_int(stmt, 5, hasRecoveredFromCancer);
+
+    if (sqlite3_step(stmt) == SQLITE_DONE)
+    {
+        cout << green << "Patient record created." << reset << endl;
+    }
+    else
+    {
+        cout << error << "Failed to create patient record." << reset << endl;
+    }
+    sqlite3_finalize(stmt);
 }
