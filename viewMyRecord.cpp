@@ -32,6 +32,20 @@ void viewMyRecord(int userId)
         cout << green << "Cancer history: " << (hasCancerHistory ? "Yes" : "No") << reset << endl;
         cout << green << "Recovered from cancer: " << (isRecoveredFromCancer ? "Yes" : "No") << reset << endl;
 
+        sql = "SELECT conditionType FROM PatientConditions WHERE patientId = (SELECT patientId FROM Patients WHERE userId = ?)";
+
+        sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
+        sqlite3_bind_int(stmt, 1, userId);
+
+        cout << green << "Conditions: " << reset << endl;
+        
+        while (sqlite3_step(stmt) == SQLITE_ROW)
+        {
+            string condition = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0));
+            cout << green << "- " << condition << reset << endl;
+        }
+        sqlite3_finalize(stmt);
+
         cout << endl << "Press Enter to return to menu...";
         cin.ignore();
         cin.get();
