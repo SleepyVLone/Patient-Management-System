@@ -44,7 +44,6 @@ void viewMyRecord(int userId)
             string condition = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0));
             cout << green << "- " << condition << reset << endl;
         }
-        sqlite3_finalize(stmt);
 
         cout << endl << "Press Enter to return to menu...";
         cin.ignore();
