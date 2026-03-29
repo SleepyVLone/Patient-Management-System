@@ -6,6 +6,7 @@
 #include "viewPatientDetails.h"
 #include "searchPatients.h"
 #include "viewPatientDetails.h"
+#include "updatePatientInformation.h"
 
 using namespace std;
 
@@ -39,7 +40,7 @@ void nurseMenu(int userId)
         }
         else if (choice == 3)
         {
-
+            updatePatientInformation();
         }
         else if (choice == 4)
         {

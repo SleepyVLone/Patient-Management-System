@@ -21,10 +21,11 @@ void pharmacistMenu(int userId)
         cout << green << "=== Pharmacist Menu ===" << reset << endl << endl;
 
         cout << lightGreen << "1. View Patients" << reset << endl;
-        cout << lightGreen << "2. View Prescriptions" << reset << endl;
-        cout << lightGreen << "3. Edit Prescriptions" << reset << endl;
-        cout << lightGreen << "4. Create Pharmacist Account" << reset << endl;
-        cout << lightGreen << "5. Logout" << reset << endl;
+        cout << lightGreen << "2. View Patient Details" << reset << endl;
+        cout << lightGreen << "3. View Prescriptions" << reset << endl;
+        cout << lightGreen << "4. Edit Prescriptions" << reset << endl;
+        cout << lightGreen << "5. Create Pharmacist Account" << reset << endl;
+        cout << lightGreen << "6. Logout" << reset << endl;
 
         int choice;
         cin >> choice;
@@ -39,13 +40,17 @@ void pharmacistMenu(int userId)
         }
         else if (choice == 3)
         {
-
+            viewPrescriptions();
         }
         else if (choice == 4)
         {
-            createPharmacistAccount();
+            
         }
         else if (choice == 5)
+        {
+            createPharmacistAccount();
+        }
+        else if (choice == 6)
         {
             break;
         }

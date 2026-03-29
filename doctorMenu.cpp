@@ -6,6 +6,7 @@
 #include "viewPatientDetails.h"
 #include "searchPatients.h"
 #include "viewPatientDetails.h"
+#include "updatePatientInformation.h"
 
 using namespace std;
 
@@ -22,9 +23,10 @@ void doctorMenu(int userId)
 
         cout << lightGreen << "1. Patient Lookup" << reset << endl;
         cout << lightGreen << "2. View Patient Details" << reset << endl;
-        cout << lightGreen << "3. Modify Patient Medication" << reset << endl;
-        cout << lightGreen << "4. View Statistics" << reset << endl;
-        cout << lightGreen << "5. Logout" << reset << endl;
+        cout << lightGreen << "3. Update Patient Information" << reset << endl;
+        cout << lightGreen << "4. Modify Patient Medication" << reset << endl;
+        cout << lightGreen << "5. View Statistics" << reset << endl;
+        cout << lightGreen << "6. Logout" << reset << endl;
 
         int choice;
         cin >> choice;
@@ -39,13 +41,17 @@ void doctorMenu(int userId)
         }
         else if (choice == 3)
         {
-            modifyMedication();
+            updatePatientInformation();
         }
         else if (choice == 4)
         {
-            calculateStatistics();
+            modifyMedication();
         }
         else if (choice == 5)
+        {
+            calculateStatistics();
+        }
+        else if (choice == 6)
         {
             break;
         }
@@ -53,6 +59,5 @@ void doctorMenu(int userId)
         {
             cout << error << "Invalid selection. Please try again." << reset << endl;
         }
-        
     }
 }
