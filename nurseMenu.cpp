@@ -4,6 +4,8 @@
 #include "calculateStatistics.h"
 #include "modifyMedication.h"
 #include "viewPatientDetails.h"
+#include "searchPatients.h"
+#include "viewPatientDetails.h"
 
 using namespace std;
 
@@ -18,7 +20,7 @@ void nurseMenu(int userId)
     {
         cout << green << "=== Nurse Menu ===" << reset << endl << endl;
 
-        cout << lightGreen << "1. View Patients" << reset << endl;
+        cout << lightGreen << "1. Patient Lookup" << reset << endl;
         cout << lightGreen << "2. View Patient Details" << reset << endl;
         cout << lightGreen << "3. Update Patient Information" << reset << endl;
         cout << lightGreen << "4. View Statistics" << reset << endl;
@@ -29,11 +31,11 @@ void nurseMenu(int userId)
 
         if (choice == 1)
         {
-            
+            searchPatients();
         }
         else if (choice == 2)
         {
-
+            viewPatientDetails();
         }
         else if (choice == 3)
         {

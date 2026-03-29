@@ -4,6 +4,8 @@
 #include "viewPrescriptions.h"
 #include "editPrescriptions.h"
 #include "createPharmacistAccount.h"
+#include "searchPatients.h"
+#include "viewPatientDetails.h"
 
 using namespace std;
 
@@ -29,11 +31,11 @@ void pharmacistMenu(int userId)
 
         if (choice == 1)
         {
-            
+            searchPatients();
         }
         else if (choice == 2)
         {
-
+            viewPatientDetails();
         }
         else if (choice == 3)
         {
@@ -41,7 +43,7 @@ void pharmacistMenu(int userId)
         }
         else if (choice == 4)
         {
-            
+            createPharmacistAccount();
         }
         else if (choice == 5)
         {
