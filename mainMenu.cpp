@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdlib> //Used for system("clear") to clear the terminal 
 
 #include "mainMenu.h"
 #include "login.h"
@@ -8,6 +9,7 @@ using namespace std;
 
 void mainMenu()
 {
+    //ANSI colour codes for colours in the terminal
     string green = "\033[32m";
     string lightGreen = "\033[92m";
     string reset = "\033[0m";
@@ -15,7 +17,7 @@ void mainMenu()
 
     int choice = 0;
 
-    while (choice !=3)
+    while (choice !=3) //Loop until the user selects exit
     {
         system("clear");
 
@@ -26,15 +28,21 @@ void mainMenu()
         cout << lightGreen << "3. Exit" << reset << endl;
 
         cout << lightGreen << "Please make a selection: ";
-        cin >> choice;
+        if (!(cin >> choice)) //Handles any inputs that aren't numbers
+        {
+            cin.clear();
+            cin.ignore(1000, '\n');
+            cout << error << "Invalid input. Please enter a number." << reset << endl;
+            continue;
+        }
 
         if (choice == 1)
         {
-            login();
+            login(); //Goes to the login function
         }
         else if (choice == 2)
         {
-            registerPatient();
+            registerPatient(); //Goes to the patient registration function
         }
         else if (choice == 3)
         {

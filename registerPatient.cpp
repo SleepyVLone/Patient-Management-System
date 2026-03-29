@@ -3,6 +3,7 @@
 
 #include "registerPatient.h"
 #include "database.h"
+#include "hashPassword.h"
 
 using namespace std;
 
@@ -112,8 +113,10 @@ void registerPatient()
 
     int result = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
 
-    sqlite3_bind_text(stmt, 1, registerUsername.c_str(), -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 2, registerPassword.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 1, registerUsername.c_str(), -1, SQLITE_STATIC);    //Binds the username to the first ?
+    
+    string hashedPassword = hashPassword(registerPassword);                     //Hashes the password before storing it in the database
+    sqlite3_bind_text(stmt, 2, hashedPassword.c_str(), -1, SQLITE_STATIC);      //Binds the hashed password to the second ?
 
     if (sqlite3_step(stmt) != SQLITE_DONE)
     {

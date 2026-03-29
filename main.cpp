@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include <cstdlib>
+#include <cstdlib> //used to clear the screen 
 
 #include "mainMenu.h"
 #include "database.h"
