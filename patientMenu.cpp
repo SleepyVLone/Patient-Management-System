@@ -13,7 +13,7 @@ void patientMenu(int userId)
     string reset = "\033[0m";
     string error = "\033[31m";
 
-    while (true)
+    while (true) //Loops until the user logs out
     {
         cout << lightGreen << "=== Patient Menu ===" << reset << endl << endl;
 
@@ -26,11 +26,11 @@ void patientMenu(int userId)
 
         if (choice == 1)
         {
-            viewMyRecord(userId);
+            viewMyRecord(userId); //Displays patient's medical record
         }
         else if (choice == 2)
         {
-            calculateTreatmentCosts(userId);
+            calculateTreatmentCosts(userId); //Calculates and displays the patients treatment costs
         }
         else if (choice == 3)
         {

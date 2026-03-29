@@ -12,23 +12,24 @@ void calculateStatistics()
     string reset = "\033[0m";
     string error = "\033[31m";
 
-    sqlite3_stmt* stmt;
+    sqlite3_stmt* stmt;     //Used to prepare and run SQL queries
 
     //Cancer
-
+    //AVG calculates the average age of all patients with cancer
+    //Links Patients and PatientConditions together using patientId
     string sql = "SELECT AVG(p.age) FROM Patients p JOIN PatientConditions pc ON p.patientId = pc.patientId WHERE pc.conditionType = 'Cancer'";
 
-    sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
+    sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr); //Prepares the SQL query so it can be ran/turns the SQL into a prepared statement
 
-    if (sqlite3_step(stmt) == SQLITE_ROW)
+    if (sqlite3_step(stmt) == SQLITE_ROW) //SQLITE_ROW runs the following if statement if a result was found
     {
-        double avgAgeCancer = sqlite3_column_double(stmt, 0);
+        double avgAgeCancer = sqlite3_column_double(stmt, 0); //0 = the column place/the average age is in column 0
         cout << green << "Average age of cancer patients: " << avgAgeCancer << reset << endl;
     }
-    sqlite3_finalize(stmt);
+    sqlite3_finalize(stmt); //release the prepared statement from the memory
 
     //Diabetes
-
+    //Everything is the same as cancer here, but for diabetes
     sql = "SELECT AVG(p.age) FROM Patients p JOIN PatientConditions pc ON p.patientId = pc.patientId WHERE pc.conditionType = 'Diabetes'";
 
     sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
@@ -41,7 +42,8 @@ void calculateStatistics()
     sqlite3_finalize(stmt);
 
     //Smokers w/ Cancer
-
+    //COUNT(*) Shows the number of matching rows
+    //hasCancerHistory = 1 means only patients with cancer history/a filter to add patients with cancer history
     sql = "SELECT COUNT(*) FROM Patients p JOIN PatientConditions pc ON p.patientId = pc.patientId WHERE pc.conditionType = 'Smoking' AND p.hasCancerHistory = 1";
 
     sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
@@ -54,7 +56,7 @@ void calculateStatistics()
     sqlite3_finalize(stmt);
 
     //Recovered cancer patients
-
+    // isRecoveredFromCancer = 1 means only show patients who have recovered
     sql = "SELECT AVG(age) FROM Patients WHERE isRecoveredFromCancer = 1";
 
     sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);

@@ -5,7 +5,6 @@
 #include "modifyMedication.h"
 #include "viewPatientDetails.h"
 #include "searchPatients.h"
-#include "viewPatientDetails.h"
 #include "updatePatientInformation.h"
 
 using namespace std;
@@ -17,7 +16,7 @@ void nurseMenu(int userId)
     string reset = "\033[0m";
     string error = "\033[31m";
 
-    while (true)
+    while (true) //Loops until nurse logs out
     {
         cout << green << "=== Nurse Menu ===" << reset << endl << endl;
 
@@ -28,23 +27,30 @@ void nurseMenu(int userId)
         cout << lightGreen << "5. Logout" << reset << endl;
 
         int choice;
-        cin >> choice;
+
+        if (!(cin >> choice)) //input validation
+        {
+            cin.clear();
+            cin.ignore(1000, '\n');
+            cout << error << "Invalid input. Please enter a number." << reset << endl;
+            continue;
+        }
 
         if (choice == 1)
         {
-            searchPatients();
+            searchPatients(); //Search for patient by name
         }
         else if (choice == 2)
         {
-            viewPatientDetails();
+            viewPatientDetails(); //View full details of a patient using their userId
         }
         else if (choice == 3)
         {
-            updatePatientInformation();
+            updatePatientInformation(); //Update a patients personal information
         }
         else if (choice == 4)
         {
-            calculateStatistics();
+            calculateStatistics(); //View all patients stats
         }
         else if (choice == 5)
         {

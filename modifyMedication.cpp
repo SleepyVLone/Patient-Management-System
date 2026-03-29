@@ -39,11 +39,12 @@ void modifyMedication()
     getline(cin, notes);
 
     sqlite3_stmt* stmt;
-
+    //Inserts a new prescription record into the database 
     string sql = "INSERT INTO Prescriptions (patientId, medicationName, dosage, frequency, notes, updatedByUserId, updatedAt) VALUES (?, ?, ?, ?, ?, 0, datetime('now'))";
 
     sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
 
+    //Binds all the values to the ? placeholders
     sqlite3_bind_int(stmt, 1, patientId);
     sqlite3_bind_text(stmt, 2, medicationName.c_str(), -1, SQLITE_STATIC);
     sqlite3_bind_text(stmt, 3, dosage.c_str(), -1, SQLITE_STATIC);
@@ -59,7 +60,7 @@ void modifyMedication()
         cout << green << "Medication saved successfully." << reset << endl;
     }
 
-    sqlite3_finalize(stmt);
+    sqlite3_finalize(stmt); //releases the prepared statement from memory
     
     cout << "\nPress Enter to return...";
     cin.ignore();

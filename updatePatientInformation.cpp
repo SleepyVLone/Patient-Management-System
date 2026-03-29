@@ -17,7 +17,7 @@ void updatePatientInformation()
     cout << "Enter patient ID: ";
     cin >> patientId;
 
-    // Verify patient exists
+    // Verify patient exists before attempting to update
 
     sqlite3_stmt* checkStmt;
 
@@ -26,7 +26,7 @@ void updatePatientInformation()
     sqlite3_prepare_v2(db, checkSql.c_str(), -1, &checkStmt, nullptr);
     sqlite3_bind_int(checkStmt, 1, patientId);
 
-    if (sqlite3_step(checkStmt) != SQLITE_ROW)
+    if (sqlite3_step(checkStmt) != SQLITE_ROW) //if statement below runs if no patient is found
     {
         cout << error << "Patient not found." << reset << endl;
         sqlite3_finalize(checkStmt);
@@ -49,7 +49,7 @@ void updatePatientInformation()
 
     sqlite3_stmt* stmt;
 
-    string sql = "UPDATE Patients SET fullName = ?, age = ? WHERE patientId = ?";
+    string sql = "UPDATE Patients SET fullName = ?, age = ? WHERE patientId = ?"; //Modifies the patient record matching the patientId
 
     sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
 

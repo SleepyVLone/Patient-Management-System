@@ -5,7 +5,6 @@
 #include "modifyMedication.h"
 #include "viewPatientDetails.h"
 #include "searchPatients.h"
-#include "viewPatientDetails.h"
 #include "updatePatientInformation.h"
 
 using namespace std;
@@ -29,27 +28,34 @@ void doctorMenu(int userId)
         cout << lightGreen << "6. Logout" << reset << endl;
 
         int choice;
-        cin >> choice;
+        //Validates that the input is a number
+        if (!(cin >> choice))
+        {
+            cin.clear();
+            cin.ignore(1000, '\n');
+            cout << error << "Invalid input. Please enter a number." << reset << endl;
+            continue;
+        }
 
         if (choice == 1)
         {
-            searchPatients();
+            searchPatients(); //searches for the patient by their name and provides their userId, so that they can be found in the viewPatientDetails using their provided ID
         }
         else if (choice == 2)
         {
-            viewPatientDetails();
+            viewPatientDetails(); //Shows a patients full details by using their userId
         }
         else if (choice == 3)
         {
-            updatePatientInformation();
+            updatePatientInformation(); //Allows the doctor to update the patients personal information
         }
         else if (choice == 4)
         {
-            modifyMedication();
+            modifyMedication(); //Allows the doctor to add or modify a patients medication
         }
         else if (choice == 5)
         {
-            calculateStatistics();
+            calculateStatistics(); //Shows the doctor all patient stats
         }
         else if (choice == 6)
         {

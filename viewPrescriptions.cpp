@@ -19,18 +19,20 @@ void viewPrescriptions()
 
     sqlite3_stmt* stmt;
 
+    //gets all the prescriptions for the patient
     string sql = "SELECT medicationName, dosage, frequency, notes, updatedAt FROM Prescriptions WHERE patientId = ?";
 
     sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
 
     sqlite3_bind_int(stmt, 1, patientId);
 
-    bool found = false;
+    bool found = false; //Checks if any prescriptions were found
 
-    while (sqlite3_step(stmt) == SQLITE_ROW)
+    while (sqlite3_step(stmt) == SQLITE_ROW) //Loops through each prescription
     {
         found = true;
 
+        //Gets each column from the results
         string medicationName = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0));
         string dosage = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
         string frequency = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
@@ -42,7 +44,7 @@ void viewPrescriptions()
         cout << lightGreen << "Frequency: " << frequency << endl;
         cout << lightGreen << "Notes: " << notes << endl;
         cout << lightGreen << "Last updated: " << updatedAt << reset << endl;
-        cout << "---" << endl;
+        cout << "---" << endl; //separator 
     }
 
     if (!found)

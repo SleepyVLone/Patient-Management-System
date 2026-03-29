@@ -17,12 +17,12 @@ void searchPatients()
     cin.ignore();
     getline(cin, searchTerm);
 
-    string searchPattern = "%" + searchTerm + "%";
+    string searchPattern = "%" + searchTerm + "%"; //Allows matching anywhere in the name
 
     sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
     sqlite3_bind_text(stmt, 1, searchPattern.c_str(), -1, SQLITE_STATIC);
 
-    while (sqlite3_step(stmt) == SQLITE_ROW)
+    while (sqlite3_step(stmt) == SQLITE_ROW) //Loops through each patient
     {
         int patientId = sqlite3_column_int(stmt, 0);
         string fullName = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));

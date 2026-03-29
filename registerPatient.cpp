@@ -3,7 +3,7 @@
 
 #include "registerPatient.h"
 #include "database.h"
-#include "hashPassword.h"
+#include "hashPassword.h" //used to hash passwords before they are stored in the database for security reasons
 
 using namespace std;
 
@@ -29,19 +29,19 @@ void registerPatient()
     string conditionType;
     bool hasDiabetes;
 
-    while(true)
+    while(true) //Loops until a valid username is entered
     {
-        cout << "Please enter the username you would like to use: ";
+        cout << "Please enter the username you would like to use: "; 
         cin >> registerUsername;
 
         sqlite3_stmt* checkStmt;
 
-        string checkSql = "SELECT userId FROM Users WHERE username = ?";
+        string checkSql = "SELECT userId FROM Users WHERE username = ?"; //Checks if the username already exists
 
         sqlite3_prepare_v2(db, checkSql.c_str(), -1, &checkStmt, nullptr);
         sqlite3_bind_text(checkStmt, 1, registerUsername.c_str(), -1, SQLITE_STATIC);
 
-        if (sqlite3_step(checkStmt) == SQLITE_ROW)
+        if (sqlite3_step(checkStmt) == SQLITE_ROW) //This if statement runs if the username already exists in the database
         {
             cout << error << "Username already taken. Please choose another." << reset << endl;
             sqlite3_finalize(checkStmt);
@@ -68,7 +68,7 @@ void registerPatient()
     string cancerHistoryInput;
     cout << "Have you ever had cancer? (yes/no): ";
     cin >> cancerHistoryInput;
-    hasCancerHistory = (cancerHistoryInput == "yes");
+    hasCancerHistory = (cancerHistoryInput == "yes"); //converts yes or no to a boolean
 
     if (hasCancerHistory)
     {
@@ -84,7 +84,7 @@ void registerPatient()
         }
         else
         {
-            hasRecoveredFromCancer = true;
+            hasRecoveredFromCancer = true; //If no current cancer assume user has recovered
         }
     }
 
@@ -108,6 +108,7 @@ void registerPatient()
         cin >> smokingFrequency;
     }
 
+    //Inserts new user into Users table
     sqlite3_stmt* stmt;
     string sql = "INSERT INTO Users (username, passwordHash, role, createdAt) VALUES (?, ?, 'Patient', datetime('now'))";
 
@@ -129,8 +130,9 @@ void registerPatient()
 
     cout << green << "Your account has been successfully registered." << reset << endl;
 
-    int userId = sqlite3_last_insert_rowid(db);
+    int userId = sqlite3_last_insert_rowid(db); //Auto gen userId
 
+    //Inserts patients personal details into Patients table
     sql = "INSERT INTO Patients (userId, fullName, age, hasCancerHistory, isRecoveredFromCancer) VALUES (?, ?, ?, ?, ?)";
 
     result = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
@@ -138,7 +140,7 @@ void registerPatient()
     sqlite3_bind_int(stmt, 1, userId);
     sqlite3_bind_text(stmt, 2, fullName.c_str(), -1, SQLITE_STATIC);
     sqlite3_bind_int(stmt, 3, age);
-    sqlite3_bind_int(stmt, 4, hasCancerHistory);
+    sqlite3_bind_int(stmt, 4, hasCancerHistory); //bool stored as int
     sqlite3_bind_int(stmt, 5, hasRecoveredFromCancer);
 
     if (sqlite3_step(stmt) == SQLITE_DONE)
@@ -151,8 +153,9 @@ void registerPatient()
     }
     sqlite3_finalize(stmt);
 
-    int patientId = sqlite3_last_insert_rowid(db);
+    int patientId = sqlite3_last_insert_rowid(db); //Gets auto gen patientId
 
+    //Inserts cancer conditions if patient has cancer conditions
     if (hasCancerHistory)
     {
         sql = "INSERT INTO PatientConditions (patientId, conditionType) VALUES (?, 'Cancer')";
@@ -165,6 +168,7 @@ void registerPatient()
 
         int patientConditionId = sqlite3_last_insert_rowid(db);
 
+        //inserts cancer stage into CancerDetails table
         sql = "INSERT INTO CancerDetails (patientConditionId, cancerStage) VALUES (?, ?)";
 
         result = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
@@ -176,7 +180,7 @@ void registerPatient()
         sqlite3_finalize(stmt);
     }
 
-    if (hasDiabetes)
+    if (hasDiabetes) //Inserts diabetes if patient has diabetes 
     {
         sql = "INSERT INTO PatientConditions (patientId, conditionType) VALUES (?, 'Diabetes')";
 
@@ -199,7 +203,7 @@ void registerPatient()
         sqlite3_finalize(stmt);
     }
 
-    if (smokingInput == "yes")
+    if (smokingInput == "yes") //Inserts smoking conditions if patient smokes
     {
         sql = "INSERT INTO PatientConditions (patientId, conditionType) VALUES (?, 'Smoking')";
 
@@ -211,6 +215,7 @@ void registerPatient()
 
         int patientConditionId = sqlite3_last_insert_rowid(db);
 
+        //Inserts smoking frequency into SmokingDetails table
         sql = "INSERT INTO SmokingDetails (patientConditionId, smokingFrequency) VALUES (?, ?)";
 
         result = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);

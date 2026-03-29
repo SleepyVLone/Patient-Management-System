@@ -4,7 +4,7 @@
 
 using namespace std;
 
-sqlite3* db = nullptr;
+sqlite3* db = nullptr; //Global pointer that keeps track of the active database connection
 
 void openDatabase()
 {
@@ -17,11 +17,11 @@ void openDatabase()
     else
     {
         cout << "Database opened!" << endl;
-        createTables();
+        createTables(); //Creates the tables if connection is successful 
     }
 }
 
-void closeDatabase()
+void closeDatabase() //Closes the database connection
 {
     int clDatabase = sqlite3_close(db);
 

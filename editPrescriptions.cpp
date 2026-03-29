@@ -19,17 +19,17 @@ void editPrescriptions()
 
     // Show the existing prescriptions first
 
-    sqlite3_stmt* stmt;
+    sqlite3_stmt* stmt; //prepares the SQL query/run it
 
-    string sql = "SELECT prescriptionId, medicationName, dosage, frequency FROM Prescriptions WHERE patientId = ?";
+    string sql = "SELECT prescriptionId, medicationName, dosage, frequency FROM Prescriptions WHERE patientId = ?"; //Gets all prescriptions for the patient
 
     sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
 
-    sqlite3_bind_int(stmt, 1, patientId);
+    sqlite3_bind_int(stmt, 1, patientId); //Binds the patient ID to the ? placeholder
 
     bool found = false;
 
-    while (sqlite3_step(stmt) == SQLITE_ROW)
+    while (sqlite3_step(stmt) == SQLITE_ROW) //Loops through each prescription
     {
         found = true;
 
@@ -40,7 +40,7 @@ void editPrescriptions()
 
         cout << green << "ID: " << prescriptionId << " | " << medicationName << " | " << dosage << " | " << frequency << reset << endl;
     }
-    sqlite3_finalize(stmt);
+    sqlite3_finalize(stmt); //relases the prepared statement from the memory 
 
     if (!found)
     {
@@ -75,7 +75,7 @@ void editPrescriptions()
     cout << "Enter new notes: ";
     getline(cin, notes);
 
-    sql = "UPDATE Prescriptions SET medicationName = ?, dosage = ?, frequency = ?, notes = ?, updatedAt = datetime('now') WHERE prescriptionId = ?";
+    sql = "UPDATE Prescriptions SET medicationName = ?, dosage = ?, frequency = ?, notes = ?, updatedAt = datetime('now') WHERE prescriptionId = ?"; //Updates the prescription record
 
     sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
 
@@ -83,7 +83,7 @@ void editPrescriptions()
     sqlite3_bind_text(stmt, 2, dosage.c_str(), -1, SQLITE_STATIC);
     sqlite3_bind_text(stmt, 3, frequency.c_str(), -1, SQLITE_STATIC);
     sqlite3_bind_text(stmt, 4, notes.c_str(), -1, SQLITE_STATIC);
-    sqlite3_bind_int(stmt, 5, prescriptionId);
+    sqlite3_bind_int(stmt, 5, prescriptionId); //Binds the prescription ID to the last ? placeholder
 
     if (sqlite3_step(stmt) != SQLITE_DONE)
     {
