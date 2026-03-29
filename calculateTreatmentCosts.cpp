@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip> //Used to set precision of calculations to 2 decimal places
 
 #include "database.h"
 #include "calculateTreatmentCosts.h"
@@ -108,12 +109,13 @@ void calculateTreatmentCosts(int userId)
 
     cout << green << "\n=== Treatment Costs ===" << reset << endl << endl;
 
-    cout << green << "Daily:   GBP £" << totalDailyGBP << " | USD $" << totalDailyGBP * exchangeRate << reset << endl;
-    cout << green << "Weekly:  GBP £" << totalWeeklyGBP << " | USD $" << totalWeeklyGBP * exchangeRate << reset << endl;
-    cout << green << "Monthly: GBP £" << totalMonthlyGBP << " | USD $" << totalMonthlyGBP * exchangeRate << reset << endl;
-    cout << green << "Yearly:  GBP £" << totalYearlyGBP << " | USD $" << totalYearlyGBP * exchangeRate << reset << endl;
+    cout.imbue(locale("en_US.UTF-8")); //Adds commas to outputs
+    cout << fixed << setprecision(2) << green << "Daily:   GBP £" << totalDailyGBP << " | USD $" << totalDailyGBP * exchangeRate << reset << endl;
+    cout << fixed << setprecision(2) << green << "Weekly:  GBP £" << totalWeeklyGBP << " | USD $" << totalWeeklyGBP * exchangeRate << reset << endl;
+    cout << fixed << setprecision(2) << green << "Monthly: GBP £" << totalMonthlyGBP << " | USD $" << totalMonthlyGBP * exchangeRate << reset << endl;
+    cout << fixed << setprecision(2) << green << "Yearly:  GBP £" << totalYearlyGBP << " | USD $" << totalYearlyGBP * exchangeRate << reset << endl << endl;
 
-    cout << "\nPress Enter to return to menu...";
+    cout << "Press Enter to return to menu...";
 
     cin.ignore();
     cin.get();
