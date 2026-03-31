@@ -15,7 +15,12 @@ void viewPatientDetails()
     int patientId;
 
     cout << "Enter patient ID: ";
-    cin >> patientId;
+    while (!(cin >> patientId))
+    {
+        cin.clear();
+        cin.ignore(1000, '\n');
+        cout << error << "Invalid input. Please enter a number: " << reset;
+    }
 
     sqlite3_stmt* stmt; //Used to prepare and run SQL queries
 

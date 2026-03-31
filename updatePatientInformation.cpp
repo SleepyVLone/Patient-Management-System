@@ -15,7 +15,12 @@ void updatePatientInformation()
     int patientId;
 
     cout << "Enter patient ID: ";
-    cin >> patientId;
+    while (!(cin >> patientId))
+    {
+        cin.clear();
+        cin.ignore(1000, '\n');
+        cout << error << "Invalid input. Please enter a number: " << reset;
+    }
 
     // Verify patient exists before attempting to update
 
@@ -43,9 +48,20 @@ void updatePatientInformation()
     cout << "Enter new full name: ";
     cin.ignore();
     getline(cin, fullName);
+    if (fullName.empty())
+    {
+        cout << error << "Full name cannot be empty." << reset << endl;
+
+        return;
+    }
 
     cout << "Enter new age: ";
-    cin >> age;
+    while (!(cin >> age) || age <= 0)
+    {
+        cin.clear();
+        cin.ignore(1000, '\n');
+        cout << error << "Invalid age. Please enter a positive number: " << reset;
+    }
 
     sqlite3_stmt* stmt;
 

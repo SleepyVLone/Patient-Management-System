@@ -15,23 +15,47 @@ void modifyMedication()
     int patientId;
 
     cout << "Enter patient ID: ";
-    cin >> patientId;
+    while (!(cin >> patientId))
+    {
+        cin.clear();
+        cin.ignore(1000, '\n');
+        cout << error << "Invalid input. Please enter a number: " << reset;
+    }
+
 
     string medicationName;
 
     cout << "Enter medication name: ";
     cin.ignore();
     getline(cin, medicationName);
+    if (medicationName.empty())
+    {
+        cout << error << "Medication name cannot be empty." << reset << endl;
 
+        return;
+    }
+    
     string dosage;
 
     cout << "Enter dosage: ";
     getline(cin, dosage);
+    if (dosage.empty())
+    {
+        cout << error << "Dosage cannot be empty." << reset << endl;
+
+        return;
+    }
 
     string frequency;
 
     cout << "Enter frequency: ";
     getline(cin, frequency);
+    if (frequency.empty())
+    {
+        cout << error << "Frequency cannot be empty." << reset << endl;
+        
+        return;
+    }
 
     string notes;
 
