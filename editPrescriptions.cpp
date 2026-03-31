@@ -15,7 +15,12 @@ void editPrescriptions()
     int patientId;
 
     cout << "Enter patient ID: ";
-    cin >> patientId;
+    while (!(cin >> patientId))
+    {
+        cin.clear();
+        cin.ignore(1000, '\n');
+        cout << error << "Invalid input. Please enter a number: " << reset;
+    }
 
     // Show the existing prescriptions first
 
@@ -55,7 +60,12 @@ void editPrescriptions()
     int prescriptionId;
 
     cout << "Enter prescription ID to edit: ";
-    cin >> prescriptionId;
+    while (!(cin >> prescriptionId))
+    {
+        cin.clear();
+        cin.ignore(1000, '\n');
+        cout << error << "Invalid input. Please enter a number: " << reset;
+    }
 
     string medicationName;
     string dosage;
