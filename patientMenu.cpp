@@ -22,7 +22,13 @@ void patientMenu(int userId)
         cout << green << "3. Logout" << reset << endl;
 
         int choice;
-        cin >> choice;
+        if (!(cin >> choice))
+        {
+            cin.clear();
+            cin.ignore(1000, '\n');
+            cout << error << "Invalid input. Please enter a number." << reset << endl;
+            continue;
+        }
 
         if (choice == 1)
         {
